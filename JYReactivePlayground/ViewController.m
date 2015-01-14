@@ -15,6 +15,7 @@
 @property (nonatomic, weak) IBOutlet UITextField *passwordTextField;
 @property (weak, nonatomic) IBOutlet UIButton *signInButton;
 @property (weak, nonatomic) IBOutlet UILabel *signInFailureText;
+@property (nonatomic, strong) JYDummySignInService *signInService;
 - (IBAction)actionLogin:(id)sender;
 
 @end
@@ -24,6 +25,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.signInService = [JYDummySignInService new];
+    self.signInFailureText.hidden = YES;
 //    [self.usernameTextField.rac_textSignal subscribeNext:^(id x) {
 //        NSLog(@"%@",x);
 //    }];
@@ -72,9 +75,39 @@
         self.signInButton.enabled = [signupActive boolValue];
     }];
     
-    [[self.signInButton rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(id x) {
-        NSLog(@"Button clicked");
+//    [[self.signInButton rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(id x) {
+//        NSLog(@"Button clicked");
+//    }];
+    
+//    [[[self.signInButton rac_signalForControlEvents:UIControlEventTouchUpInside] map:^id(id value) {
+//        return [self signInButton];
+//    }] subscribeNext:^(id x) {
+//        NSLog(@"Sign in result : %@",x);
+//    }];
+    
+    [[[self.signInButton rac_signalForControlEvents:UIControlEventTouchUpInside] flattenMap:^RACStream *(id value) {
+        return [self signInSignal];
+    }] subscribeNext:^(NSNumber *signedIn) {
+        NSLog(@"Sign in result:%@",signedIn);
+        BOOL success = [signedIn boolValue];
+        self.signInFailureText.hidden = success;
+        if (success) {
+            [self performSegueWithIdentifier:@"loginsuccess" sender:self];
+        }
     }];
+    
+//    [[[[self.signInButton rac_signalForControlEvents:UIControlEventTouchUpInside] doNext:^(id x) {
+//        self.signInButton.enabled = NO;
+//        self.signInFailureText.hidden = YES;
+//    }] flattenMap:^RACStream *(id value) {
+//        return [self signInSignal];
+//    }] subscribeNext:^(NSNumber *signedIn) {
+//        self.signInButton.enabled = YES;
+//        BOOL success = [signedIn boolValue];
+//        if (success) {
+//            [self performSegueWithIdentifier:@"loginsuccess" sender:self];
+//        }
+//    }];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -82,25 +115,32 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (BOOL)isValidUserName:(NSString *)name
-{
-    if (name != nil && name.length >= 3) {
-        return YES;
-    }
-    return NO;
+- (RACSignal *)signInSignal{
+    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        [self.signInService signInWithUsername:self.usernameTextField.text password:self.passwordTextField.text complete:^(BOOL success) {
+            [subscriber sendNext:@(success)];
+            [subscriber sendCompleted];
+        }];
+        return nil;
+    }];
 }
 
-- (BOOL)isValidPassword:(NSString *)password
-{
-    if (password != nil && password.length >= 6) {
-        return YES;
-    }
-    return NO;
+- (BOOL)isValidUserName:(NSString *)name {
+  if (name != nil && name.length >= 3) {
+    return YES;
+  }
+  return NO;
 }
 
-- (IBAction)actionLogin:(id)sender
-{
-    [self performSegueWithIdentifier:@"loginsuccess" sender:self];
+- (BOOL)isValidPassword:(NSString *)password {
+  if (password != nil && password.length >= 6) {
+    return YES;
+  }
+  return NO;
+}
+
+- (IBAction)actionLogin:(id)sender {
+  [self performSegueWithIdentifier:@"loginsuccess" sender:self];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
