@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface ViewController : UIViewController<UITextFieldDelegate>
+extern NSString *const ViewStringConstant;
+extern const NSTimeInterval ViewAnimationDuration;
+@interface ViewController : UIViewController<UITextFieldDelegate,UIAlertViewDelegate>
 
 
 @end

@@ -9,6 +9,28 @@
 #import "ViewController.h"
 #import "JYDummySignInService.h"
 #import <ReactiveCocoa.h>
+#import <objc/runtime.h>
+
+typedef NS_ENUM(NSUInteger, EOCConnectionState){
+    EOCConnectionStateDisconnected,
+    EOCConnectionStateConnecting,
+    EOCConnectionStateConnected,
+    EOCConnectionStateConnectDefault,
+};
+
+
+typedef NS_ENUM(NSUInteger, JYUIViewAutoresizing) {
+    JYUIViewAutoresizingNone                    = 0,
+    JYUIViewAutoresizingFlexibleLeftMargin      = 1 << 0,
+    JYUIViewAutoresizingFlexibleWidth           = 1 << 1,
+    JYUIViewAutoresizingFlexibleRigthMargin     = 1 << 2,
+    JYUIViewAutoresizingFlexibleTopMargin       = 1 << 3,
+    JYUIViewAutoresizingFlexibleHeight          = 1 << 4,
+    JYUIViewAutoresizingFlexibleBottomMargin    = 1 << 5,
+};
+
+static void * EOCMyAlertViewKey = "EOCMyAlertViewKey";
+
 @interface ViewController ()
 
 @property (nonatomic, weak) IBOutlet UITextField *usernameTextField;
@@ -19,14 +41,23 @@
 - (IBAction)actionLogin:(id)sender;
 
 @end
+//static const NSTimeInterval ViewAnimationDuration = 0.3;
+NSString *const ViewStringConstant = @"Value";
+const NSTimeInterval ViewAnimationDuration = 0.3;
 
 @implementation ViewController
-
++ (BOOL)resolveClassMethod:(SEL)sel
+{
+    return YES;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+//    [self askUserAQuestion];
+    
     self.signInService = [JYDummySignInService new];
     self.signInFailureText.hidden = YES;
+    
 //    [self.usernameTextField.rac_textSignal subscribeNext:^(id x) {
 //        NSLog(@"%@",x);
 //    }];
@@ -45,6 +76,12 @@
 //        NSLog(@"%@",x);
 //    }];
 
+    int i = 2;
+    switch (i) {
+        case EOCConnectionStateConnected:
+            NSLog(@"1");
+            break;
+    }
     RACSignal *validUsernameSignal = [self.usernameTextField.rac_textSignal map:^id(NSString *text) {
         return @([self isValidUserName:text]);
     }];
@@ -75,6 +112,15 @@
         self.signInButton.enabled = [signupActive boolValue];
     }];
     
+    NSDictionary *dic = @{@"Name":@"JY",@"Age":@30};
+    NSString *name = dic[@"JY"];
+    int age = [dic[@"Age"] intValue];
+    NSLog(@"name : %@\tage : %d",name,age);
+    
+    NSArray *arr1 = @[@"A",@"B",@"C"];
+    NSMutableArray *arr2 = [@[@1,@2,@3] mutableCopy];
+    
+
 //    [[self.signInButton rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(id x) {
 //        NSLog(@"Button clicked");
 //    }];
@@ -108,11 +154,97 @@
 //            [self performSegueWithIdentifier:@"loginsuccess" sender:self];
 //        }
 //    }];
+    
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)askUserAQuestion {
+    UIAlertView *__autoreleasing alert = [[UIAlertView alloc] initWithTitle:@"Question"
+                                                    message:@"What do you want to do?"
+                                                   delegate:self
+                                          cancelButtonTitle:@"Cancel"
+                                          otherButtonTitles:@"Continue", nil];
+    void(^block)(NSUInteger) = ^(NSUInteger buttonIndex) {
+        if (buttonIndex == 0) {
+            [self doCancel];
+        } else {
+            [self doContinue];
+        }
+    };
+    
+    objc_setAssociatedObject(alert, EOCMyAlertViewKey, block, OBJC_ASSOCIATION_COPY_NONATOMIC);
+    
+    [alert show];
+}
+
+- (IBAction)actionAlertClick1:(id)sender{
+    
+    NSArray *arr = [NSArray arrayWithObject:@1];
+    [arr objectAtIndex:1];
+    
+    return;
+    
+    UIAlertView *__autoreleasing alert = [[UIAlertView alloc] initWithTitle:@"提示一"
+                                                                    message:@"提示信息一"
+                                                                   delegate:self
+                                                          cancelButtonTitle:@"Cancel"
+                                                          otherButtonTitles:@"Continue", nil];
+    void(^block)(NSUInteger) = ^(NSUInteger buttonIndex) {
+        if (buttonIndex == 0) {
+            [self doCancel];
+        } else {
+            [self doContinue];
+        }
+    };
+    
+    objc_setAssociatedObject(alert, EOCMyAlertViewKey, block, OBJC_ASSOCIATION_COPY_NONATOMIC);
+    
+    [alert show];
+}
+
+- (IBAction)actionAlertClick2:(id)sender {
+    UIAlertView *__autoreleasing alert = [[UIAlertView alloc] initWithTitle:@"提示二"
+                                                                    message:@"提示信息二"
+                                                                   delegate:self
+                                                          cancelButtonTitle:@"Cancel"
+                                                          otherButtonTitles:@"Continue", nil];
+    void(^block)(NSUInteger) = ^(NSUInteger buttonIndex) {
+        if (buttonIndex == 0) {
+            [self doContinue];
+        } else {
+            [self doCancel];
+        }
+    };
+    
+    objc_setAssociatedObject(alert, EOCMyAlertViewKey, block, OBJC_ASSOCIATION_COPY_NONATOMIC);
+    
+    [alert show];
+}
+- (void)doCancel {
+    NSLog(@"Action Cancel......");
+}
+
+- (void)doContinue {
+    NSLog(@"Action Continue......");
+}
+
+#pragma mark UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+//    if (buttonIndex == 0) {
+//        [self doCancel];
+//    } else {
+//        [self doContinue];
+//    }
+    void (^block)(NSUInteger) = objc_getAssociatedObject(alertView, EOCMyAlertViewKey);
+    block(buttonIndex);
+    
+    objc_removeAssociatedObjects(alertView);
+    
 }
 
 - (RACSignal *)signInSignal{

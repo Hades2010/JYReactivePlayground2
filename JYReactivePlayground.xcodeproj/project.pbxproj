@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		18BA0B841A8B43240044A9D2 /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 18BA0B831A8B43240044A9D2 /* UncaughtExceptionHandler.m */; };
 		18D9C9AB1A5FA62F0006B721 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 18D9C9AA1A5FA62F0006B721 /* main.m */; };
 		18D9C9AE1A5FA62F0006B721 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 18D9C9AD1A5FA62F0006B721 /* AppDelegate.m */; };
 		18D9C9B11A5FA62F0006B721 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18D9C9B01A5FA62F0006B721 /* ViewController.m */; };
@@ -31,6 +32,8 @@
 
 /* Begin PBXFileReference section */
 		183152331A5FC47000A8AFF0 /* JYRPPrefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JYRPPrefix.pch; sourceTree = "<group>"; };
+		18BA0B821A8B43240044A9D2 /* UncaughtExceptionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UncaughtExceptionHandler.h; sourceTree = "<group>"; };
+		18BA0B831A8B43240044A9D2 /* UncaughtExceptionHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UncaughtExceptionHandler.m; sourceTree = "<group>"; };
 		18D9C9A51A5FA62F0006B721 /* JYReactivePlayground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JYReactivePlayground.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		18D9C9A91A5FA62F0006B721 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		18D9C9AA1A5FA62F0006B721 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -108,6 +111,8 @@
 				18D9C9B01A5FA62F0006B721 /* ViewController.m */,
 				18D9C9D01A5FB55F0006B721 /* JYDummySignInService.h */,
 				18D9C9D11A5FB55F0006B721 /* JYDummySignInService.m */,
+				18BA0B821A8B43240044A9D2 /* UncaughtExceptionHandler.h */,
+				18BA0B831A8B43240044A9D2 /* UncaughtExceptionHandler.m */,
 				18D9C9B21A5FA62F0006B721 /* Main.storyboard */,
 				18D9C9B51A5FA62F0006B721 /* Images.xcassets */,
 				18D9C9B71A5FA62F0006B721 /* LaunchScreen.xib */,
@@ -290,6 +295,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				18D9C9B11A5FA62F0006B721 /* ViewController.m in Sources */,
+				18BA0B841A8B43240044A9D2 /* UncaughtExceptionHandler.m in Sources */,
 				18D9C9D21A5FB55F0006B721 /* JYDummySignInService.m in Sources */,
 				18D9C9AE1A5FA62F0006B721 /* AppDelegate.m in Sources */,
 				18D9C9AB1A5FA62F0006B721 /* main.m in Sources */,

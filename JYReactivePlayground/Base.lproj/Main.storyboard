@@ -126,6 +126,30 @@
                                     </mask>
                                 </variation>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IpB-Ns-eHM">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <state key="normal" title="警告二">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="268" y="78" width="46" height="30"/>
+                                </variation>
+                                <connections>
+                                    <action selector="actionAlertClick2:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="MjJ-2U-MyI"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Zv-DO-GcO">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <state key="normal" title="警告一">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="114" y="78" width="46" height="30"/>
+                                </variation>
+                                <connections>
+                                    <action selector="actionAlertClick1:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="pWr-1h-mmA"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -147,6 +171,10 @@
                             <constraint firstAttribute="centerX" secondItem="dlW-Xk-ge8" secondAttribute="centerX" id="zhr-pf-1Mv"/>
                         </constraints>
                         <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="IpB-Ns-eHM"/>
+                                <exclude reference="1Zv-DO-GcO"/>
+                            </mask>
                             <mask key="constraints">
                                 <exclude reference="hgx-l9-16h"/>
                                 <exclude reference="lk7-N1-szF"/>
@@ -167,6 +195,10 @@
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="IpB-Ns-eHM"/>
+                                <include reference="1Zv-DO-GcO"/>
+                            </mask>
                             <mask key="constraints">
                                 <include reference="hgx-l9-16h"/>
                                 <include reference="lk7-N1-szF"/>

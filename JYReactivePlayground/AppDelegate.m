@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-
+#import "UncaughtExceptionHandler.h"
 @interface AppDelegate ()
 
 @end
@@ -16,6 +16,8 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    InstallUncaughtExceptionHandler();
+    
     // Override point for customization after application launch.
     UIColor* navColor = [UIColor colorWithRed:0.175f green:0.458f blue:0.831f alpha:1.0f];
     [[UINavigationBar appearance] setBarTintColor:navColor];
